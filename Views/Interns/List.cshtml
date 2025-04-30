@@ -1,0 +1,38 @@
+@model IEnumerable<ResourceManagementApp.Models.Entities.Intern>
+
+@{
+    ViewData["Title"] = "Intern List";
+}
+
+<h2>Intern List</h2>
+
+<a asp-action="Add" class="btn btn-success mb-3">Add New Intern</a>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Subscribed</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var intern in Model)
+        {
+            <tr>
+                <td>@intern.Name</td>
+                <td>@intern.Email</td>
+                <td>@intern.Phone</td>
+                <td>@intern.Subscribed</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@intern.Id" class="btn btn-warning btn-sm">Edit</a>
+                    <form asp-action="Delete" asp-route-id="@intern.Id" method="post" style="display:inline;">
+                        <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure?')">Delete</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

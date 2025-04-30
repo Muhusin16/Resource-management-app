@@ -1,0 +1,47 @@
+@model ResourceManagementApp.Models.AddReviewViewModel
+@{
+    ViewData["Title"] = "Add Review";
+    var interns = ViewBag.Interns as List<ResourceManagementApp.Models.Entities.Intern>;
+    var mentors = ViewBag.Mentors as List<ResourceManagementApp.Models.Entities.User>;
+}
+
+<h2>Add Review</h2>
+
+<form asp-action="Add" method="post">
+    <div class="form-group">
+        <label for="InternId">Select Intern</label>
+        <select asp-for="InternId" class="form-control" asp-items="@(new SelectList(interns, "Id", "Name"))">
+            <option value="">-- Select Intern --</option>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="MentorId">Select Mentor</label>
+        <select asp-for="MentorId" class="form-control" asp-items="@(new SelectList(mentors, "Id", "Username"))">
+            <option value="">-- Select Mentor --</option>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label>Soft Skill Score</label>
+        <input asp-for="SoftSkillScore" class="form-control" type="number" min="0" max="10" />
+    </div>
+
+    <div class="form-group">
+        <label>Technical Skill Score</label>
+        <input asp-for="TechnicalSkillScore" class="form-control" type="number" min="0" max="10" />
+    </div>
+
+    <div class="form-group">
+        <label>Timeliness Score</label>
+        <input asp-for="TimelinessScore" class="form-control" type="number" min="0" max="10" />
+    </div>
+
+    <div class="form-group">
+        <label>Mentor Feedback Notes</label>
+        <textarea asp-for="MentorFeedbackNotes" class="form-control"></textarea>
+    </div>
+
+    <button type="submit" class="btn btn-success">Submit Review</button>
+    <a asp-action="List" class="btn btn-secondary">Back to List</a>
+</form>
