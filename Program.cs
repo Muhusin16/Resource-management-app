@@ -11,7 +11,6 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("ResourceManagementDb")));
 
-// Add Authentication
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>
     {
@@ -30,7 +29,6 @@ using (var scope = app.Services.CreateScope())
 {
     var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
 
-    // Check if users table is empty
     if (!dbContext.Users.Any())
     {
         var hashedPassword = BCrypt.Net.BCrypt.HashPassword("P@ssw0rd");
@@ -58,7 +56,6 @@ if (!app.Environment.IsDevelopment())
 app.UseStaticFiles();
 app.UseRouting();
 
-// Add these in correct order
 app.UseAuthentication();
 app.UseAuthorization();
 

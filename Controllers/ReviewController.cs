@@ -2,69 +2,50 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ResourceManagementApp.Data;
-using ResourceManagementApp.Models;
 using ResourceManagementApp.Models.Entities;
 
 namespace ResourceManagementApp.Controllers
 {
-    [Authorize(Roles = "Mentor,Manager")]
-    public class ReviewsController : Controller
+    [Authorize]
+    public class ReviewController : Controller
     {
-        private readonly ApplicationDbContext _context;
+        private readonly ApplicationDbContext _db;
 
-        public ReviewsController(ApplicationDbContext context)
+        public ReviewController(ApplicationDbContext db)
         {
-            _context = context;
+            _db = db;
         }
 
         [HttpGet]
-        public async Task<IActionResult> List()
-        {
-            var reviews = await _context.Reviews
-                .Include(r => r.Intern)
-                .Include(r => r.Mentor)
-                .ToListAsync();
-
-            return View(reviews);
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> Add()
-        {
-            ViewBag.Interns = await _context.Interns.ToListAsync();
-            ViewBag.Mentors = await _context.Users.Where(u => u.Role == "Mentor").ToListAsync();
-
-            return View();
-        }
+        public IActionResult Add() => View();
 
         [HttpPost]
-        public async Task<IActionResult> Add(AddReviewViewModel model)
+        public async Task<IActionResult> Add(Review review)
         {
             if (!ModelState.IsValid)
             {
-                ViewBag.Interns = await _context.Interns.ToListAsync();
-                ViewBag.Mentors = await _context.Users.Where(u => u.Role == "Mentor").ToListAsync();
-                return View(model);
+                // Log the errors to understand why the form isn't valid
+                foreach (var error in ModelState.Values.SelectMany(v => v.Errors))
+                {
+                    Console.WriteLine(error.ErrorMessage);
+                }
+
+                return View(review);
             }
 
-            var review = new Review
-            {
-                InternId = model.InternId,
-                MentorId = model.MentorId,
-                Intern = await _context.Interns.FindAsync(model.InternId) ?? throw new InvalidOperationException("Intern not found."),
-                Mentor = await _context.Users.FindAsync(model.MentorId) ?? throw new InvalidOperationException("Mentor not found."),
-                MentorFeedbackNotes = model.MentorFeedbackNotes,
-                SoftSkillScore = model.SoftSkillScore,
-                TechnicalSkillScore = model.TechnicalSkillScore,
-                TimelinessScore = model.TimelinessScore,
-                FinalScore = (model.SoftSkillScore + model.TechnicalSkillScore + model.TimelinessScore) / 3,
-                IsFinalReview = false
-            };
-
-            _context.Reviews.Add(review);
-            await _context.SaveChangesAsync();
+            review.Id = Guid.NewGuid();
+            review.Reviewer = User.Identity!.Name!;
+            await _db.Reviews.AddAsync(review);
+            await _db.SaveChangesAsync();
 
             return RedirectToAction("List");
+        }
+
+
+        public async Task<IActionResult> List()
+        {
+            var reviews = await _db.Reviews.ToListAsync();
+            return View(reviews);
         }
     }
 }

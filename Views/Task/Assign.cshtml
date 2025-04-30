@@ -1,0 +1,33 @@
+@model ResourceManagementApp.Models.Entities.TaskAssignment
+
+@{
+    ViewData["Title"] = "Assign Task";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<form asp-action="Assign" method="post">
+    <div class="form-group">
+        <label asp-for="Title"></label>
+        <input asp-for="Title" class="form-control" />
+        <span asp-validation-for="Title" class="text-danger" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Description"></label>
+        <textarea asp-for="Description" class="form-control"></textarea>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="AssignedTo">Assign To (Username)</label>
+        <input asp-for="AssignedTo" class="form-control" />
+        <span asp-validation-for="AssignedTo" class="text-danger" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="DueDate">Due Date</label>
+        <input asp-for="DueDate" type="date" class="form-control" />
+    </div>
+
+    <button type="submit" class="btn btn-primary mt-2">Assign Task</button>
+</form>

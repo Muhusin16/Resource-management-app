@@ -17,8 +17,5 @@ namespace ResourceManagementApp.Models.Entities
 
         public bool Subscribed { get; set; }
 
-        // Navigation Properties
-        public ICollection<TaskItem> Tasks { get; set; } = new List<TaskItem>();
-        public ICollection<Review> Reviews { get; set; } = new List<Review>();
     }
 }

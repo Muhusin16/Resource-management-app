@@ -1,57 +1,96 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - ResourceManagementApp</title>
+
+    <!-- Import Map for modern JavaScript module handling -->
     <script type="importmap"></script>
+
+    <!-- Use Bootstrap 5 CSS (Responsive and Modern) -->
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    
+    <!-- Add custom site CSS and versioning for cache busting -->
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/ResourceManagementApp.styles.css" asp-append-version="true" />
+    
+    <!-- Favicon for the app -->
+    <link rel="icon" href="~/favicon.ico" type="image/x-icon" />
 </head>
+
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <!-- Main Navigation Bar with accessibility features -->
+        <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm">
             <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">ResourceManagementApp</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
+                <a class="navbar-brand" href="@Url.Action("Index", "Home")">
+                    ResourceManagementApp
+                </a>
+
+                <!-- Navbar Toggle for Mobile -->
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
+
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto"> <!-- ms-auto for aligning to the right -->
+                        <!-- Home Link -->
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                            <a class="nav-link text-dark" href="@Url.Action("Index", "Home")">Home</a>
+                        </li>
+
+                        <!-- Intern List Link -->
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" href="@Url.Action("List", "Interns")">Interns List</a>
+                        </li>
+
+                        <!-- Task Management Links -->
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" href="@Url.Action("List", "Task")">Task List</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                            <a class="nav-link text-dark" href="@Url.Action("Assign", "Task")">Assign Task</a>
                         </li>
-                          <li class="nav-item"></li>
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Interns" asp-action="List">Interns List</a>
+
+                        <!-- Review Management Links -->
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" href="@Url.Action("List", "Review")">Review List</a>
                         </li>
-                            </li>
-                          <li class="nav-item"></li>
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Auth" asp-action="Logout">Logout</a>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" href="@Url.Action("Add", "Review")">Add Review</a>
+                        </li>
+
+                        <!-- Logout Link -->
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" href="@Url.Action("Logout", "Auth")">Logout</a>
                         </li>
                     </ul>
                 </div>
             </div>
         </nav>
     </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2025 - ResourceManagementApp - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+    <main role="main" class="container py-4">
+        <!-- Page Content from child views will be inserted here -->
+        @RenderBody()
+    </main>
+
+    <footer class="bg-light border-top">
+        <div class="container py-3 text-center">
+            &copy; 2025 - ResourceManagementApp | 
+            <a href="@Url.Action("Privacy", "Home")">Privacy</a>
         </div>
     </footer>
+
+    <!-- Including jQuery, Bootstrap JS, and custom scripts -->
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    
+    <!-- Render Scripts section if defined in child views -->
     @await RenderSectionAsync("Scripts", required: false)
 </body>
+
 </html>

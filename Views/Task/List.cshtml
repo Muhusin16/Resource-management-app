@@ -1,0 +1,29 @@
+@model IEnumerable<ResourceManagementApp.Models.Entities.TaskAssignment>
+
+@{
+    ViewData["Title"] = "Task List";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Assigned To</th>
+            <th>Due Date</th>
+            <th>Completed</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var task in Model)
+        {
+            <tr>
+                <td>@task.Title</td>
+                <td>@task.AssignedTo</td>
+                <td>@task.DueDate?.ToShortDateString()</td>
+                <td>@(task.Completed ? "Yes" : "No")</td>
+            </tr>
+        }
+    </tbody>
+</table>
