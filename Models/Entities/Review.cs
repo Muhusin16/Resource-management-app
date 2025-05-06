@@ -1,21 +1,23 @@
+using System.ComponentModel.DataAnnotations;
 
-namespace ResourceManagementApp.Models.Entities;
-public class Review
+namespace ResourceManagementApp.Models.Entities
 {
-    public int Id { get; set; }
+    public class Review
+    {
+        public Guid Id { get; set; }
 
-    public Guid InternId { get; set; }
-    public required Intern Intern { get; set; }
+        [Required]
+        public required string Reviewer { get; set; } // Username
 
-    public Guid MentorId { get; set; }  // Use Guid here
-    public required User Mentor { get; set; }    // Use User instead of ApplicationUser
+        [Required]
+        public required string Reviewee { get; set; } // Username
 
-    public string? MentorFeedbackNotes { get; set; }
-    public int SoftSkillScore { get; set; }
-    public int TechnicalSkillScore { get; set; }
-    public int TimelinessScore { get; set; }
+        [Required]
+        public required string Feedback { get; set; }
 
-    public string? FinalRecommendation { get; set; }
-    public int? FinalScore { get; set; }
-    public bool IsFinalReview { get; set; }
+        [Range(1, 5)]
+        public int Rating { get; set; }
+
+        public DateTime ReviewDate { get; set; } = DateTime.UtcNow;
+    }
 }

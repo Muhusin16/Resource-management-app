@@ -1,0 +1,49 @@
+@model ResourceManagementApp.Models.Entities.Review
+
+@{
+    ViewData["Title"] = "Submit Review";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<form asp-action="Add" method="post" class="mt-4">
+    <div class="form-group">
+        <label asp-for="Reviewee" class="form-label">Reviewee (Username)</label>
+        <input asp-for="Reviewee" class="form-control" placeholder="Enter the username of the person being reviewed"
+            required />
+        <span asp-validation-for="Reviewee" class="text-danger" role="alert" aria-live="assertive" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Feedback" class="form-label">Feedback</label>
+        <textarea asp-for="Feedback" class="form-control" rows="4" placeholder="Enter your feedback here"
+            required></textarea>
+        <span asp-validation-for="Feedback" class="text-danger" role="alert" aria-live="assertive" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Rating" class="form-label">Rating</label>
+        <select asp-for="Rating" class="form-control" required>
+            <option value="">Select Rating</option>
+            @for (int i = 1; i <= 5; i++)
+            {
+                <option value="@i">@i</option>
+            }
+        </select>
+        <span asp-validation-for="Rating" class="text-danger" role="alert" aria-live="assertive" />
+    </div>
+
+    <!-- Hidden input for Reviewer, to be captured automatically from the logged-in user's name -->
+    <input type="hidden" asp-for="Reviewer" value="@User.Identity.Name" />
+
+    <div class="form-group mt-4">
+        <button type="submit" class="btn btn-primary">Submit Review</button>
+        <a asp-action="List" class="btn btn-secondary ms-2">Back to Reviews List</a>
+    </div>
+
+</form>
+
+<!-- Adding client-side validation script -->
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
