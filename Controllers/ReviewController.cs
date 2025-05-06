@@ -41,6 +41,46 @@ namespace ResourceManagementApp.Controllers
             return RedirectToAction("List");
         }
 
+        [HttpGet]
+        public async Task<IActionResult> Edit(Guid id)
+        {
+            var review = await _db.Reviews.FindAsync(id);
+            if (review == null)
+                return NotFound();
+
+            return View(review);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(Review updatedReview)
+        {
+            if (!ModelState.IsValid)
+                return View(updatedReview);
+
+            var existingReview = await _db.Reviews.FindAsync(updatedReview.Id);
+            if (existingReview == null)
+                return NotFound();
+
+            existingReview.Reviewee = updatedReview.Reviewee;
+            existingReview.Feedback = updatedReview.Feedback;
+            existingReview.Rating = updatedReview.Rating;
+
+            await _db.SaveChangesAsync();
+            return RedirectToAction("List");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Delete(Guid id)
+        {
+            var review = await _db.Reviews.FindAsync(id);
+            if (review == null)
+                return NotFound();
+
+            _db.Reviews.Remove(review);
+            await _db.SaveChangesAsync();
+            return RedirectToAction("List");
+        }
+
 
         public async Task<IActionResult> List()
         {

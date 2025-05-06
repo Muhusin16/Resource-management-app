@@ -1,12 +1,14 @@
 @model ResourceManagementApp.Models.Entities.TaskAssignment
 
 @{
-    ViewData["Title"] = "Assign Task";
+    ViewData["Title"] = "Edit Task";
 }
 
 <h2>@ViewData["Title"]</h2>
 
-<form asp-action="Assign" method="post">
+<form asp-action="Edit" method="post">
+    <input type="hidden" asp-for="Id" />
+
     <div class="form-group">
         <label asp-for="Title"></label>
         <input asp-for="Title" class="form-control" />
@@ -29,6 +31,11 @@
         <input asp-for="DueDate" type="date" class="form-control" />
     </div>
 
-    <button type="submit" class="btn btn-primary mt-2">Assign Task</button>
+    <div class="form-group">
+        <label asp-for="Completed"></label>
+        <input asp-for="Completed" type="checkbox" />
+    </div>
+
+    <button type="submit" class="btn btn-primary mt-2">Update Task</button>
     <a asp-action="List" class="btn btn-secondary mt-2">Back to List</a>
 </form>

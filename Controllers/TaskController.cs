@@ -33,6 +33,47 @@ namespace ResourceManagementApp.Controllers
             return RedirectToAction("List");
         }
 
+        // GET: Task/Edit/{id}
+        [HttpGet]
+        public async Task<IActionResult> Edit(Guid id)
+        {
+            var task = await _db.Tasks.FindAsync(id);
+            if (task == null) return NotFound();
+            return View(task);
+        }
+
+        // POST: Task/Edit
+        [HttpPost]
+        public async Task<IActionResult> Edit(TaskAssignment updatedTask)
+        {
+            if (!ModelState.IsValid) return View(updatedTask);
+
+            var existingTask = await _db.Tasks.FindAsync(updatedTask.Id);
+            if (existingTask == null) return NotFound();
+
+            existingTask.Title = updatedTask.Title;
+            existingTask.Description = updatedTask.Description;
+            existingTask.AssignedTo = updatedTask.AssignedTo;
+            existingTask.DueDate = updatedTask.DueDate;
+            existingTask.Completed = updatedTask.Completed;
+
+            await _db.SaveChangesAsync();
+            return RedirectToAction("List");
+        }
+
+        // GET: Task/Delete/{id}
+        [HttpGet]
+        public async Task<IActionResult> Delete(Guid id)
+        {
+            var task = await _db.Tasks.FindAsync(id);
+            if (task == null) return NotFound();
+
+            _db.Tasks.Remove(task);
+            await _db.SaveChangesAsync();
+            return RedirectToAction("List");
+        }
+
+
         public async Task<IActionResult> List()
         {
             var tasks = await _db.Tasks.ToListAsync();
